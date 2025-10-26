@@ -1,0 +1,76 @@
+/* Game Timer and Move Counter Styles */
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: var(--bg-white);
+  border: 2px solid var(--border-dark);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timer-display {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timer-display::before {
+  content: "⏱️";
+}
+
+.move-counter {
+  font-size: 16px;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.move-counter::before {
+  content: "🎯";
+}
+
+.timer-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.timer-btn {
+  background: var(--accent-brown);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.timer-btn:hover {
+  background: var(--border-dark);
+  transform: translateY(-2px);
+}
+
+.timer-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .game-info {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .timer-display, .move-counter {
+    font-size: 16px;
+  }
+}

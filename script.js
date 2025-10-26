@@ -546,3 +546,93 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', newTheme);
   updateThemeIcon();
 });
+
+// Game Timer and Move Counter
+let gameTimer = {
+  startTime: null,
+  elapsedTime: 0,
+  isRunning: false,
+  isPaused: false,
+  intervalId: null
+};
+
+let moveCount = 0;
+
+const timerDisplay = document.getElementById('timerDisplay');
+const moveCounter = document.getElementById('moveCounter');
+const pauseBtn = document.getElementById('pauseBtn');
+const resetTimerBtn = document.getElementById('resetTimerBtn');
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function updateTimerDisplay() {
+  const currentTime = gameTimer.isRunning && !gameTimer.isPaused 
+    ? gameTimer.elapsedTime + Math.floor((Date.now() - gameTimer.startTime) / 1000)
+    : gameTimer.elapsedTime;
+  timerDisplay.textContent = formatTime(currentTime);
+}
+
+function startTimer() {
+  if (!gameTimer.isRunning) {
+    gameTimer.isRunning = true;
+    gameTimer.startTime = Date.now();
+    gameTimer.intervalId = setInterval(updateTimerDisplay, 1000);
+  } else if (gameTimer.isPaused) {
+    gameTimer.isPaused = false;
+    gameTimer.startTime = Date.now();
+  }
+}
+
+function pauseTimer() {
+  if (gameTimer.isRunning && !gameTimer.isPaused) {
+    gameTimer.isPaused = true;
+    gameTimer.elapsedTime += Math.floor((Date.now() - gameTimer.startTime) / 1000);
+    pauseBtn.textContent = '▶️ Resume';
+  } else if (gameTimer.isPaused) {
+    startTimer();
+    pauseBtn.textContent = '⏸️ Pause';
+  }
+}
+
+function resetTimer() {
+  clearInterval(gameTimer.intervalId);
+  gameTimer = {
+    startTime: null,
+    elapsedTime: 0,
+    isRunning: false,
+    isPaused: false,
+    intervalId: null
+  };
+  moveCount = 0;
+  timerDisplay.textContent = '00:00';
+  moveCounter.textContent = 'Moves: 0';
+  pauseBtn.textContent = '⏸️ Pause';
+}
+
+function incrementMoveCount() {
+  moveCount++;
+  moveCounter.textContent = `Moves: ${moveCount}`;
+  
+  // Start timer on first move
+  if (moveCount === 1) {
+    startTimer();
+  }
+}
+
+// Event listeners
+pauseBtn.addEventListener('click', pauseTimer);
+resetTimerBtn.addEventListener('click', resetTimer);
+
+// Integrate with existing game logic
+const originalPlaceMarker = placeMarker;
+function placeMarker(event) {
+  const result = originalPlaceMarker(event);
+  if (result) {
+    incrementMoveCount();
+  }
+  return result;
+}
