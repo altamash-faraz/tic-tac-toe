@@ -840,3 +840,195 @@ window.addEventListener('resize', () => {
   document.getElementById('keyboardHelp').style.display = 
     window.innerWidth > 768 ? 'block' : 'none';
 });
+
+// Advanced Game Statistics
+let gameStats = {
+  totalGames: 0,
+  wins: { player1: 0, player2: 0 },
+  draws: 0,
+  totalMoves: 0,
+  totalTime: 0,
+  bestTime: null,
+  fastestWin: null,
+  currentStreak: { player: null, count: 0 },
+  longestStreak: { player: null, count: 0 },
+  averageMovesPerGame: 0,
+  gamesThisSession: 0
+};
+
+// Load stats from localStorage
+function loadStats() {
+  const saved = localStorage.getItem('ticTacToeStats');
+  if (saved) {
+    gameStats = { ...gameStats, ...JSON.parse(saved) };
+  }
+}
+
+// Save stats to localStorage
+function saveStats() {
+  localStorage.setItem('ticTacToeStats', JSON.stringify(gameStats));
+}
+
+// Update stats when game ends
+function updateGameStats(winner, gameTime, moves) {
+  gameStats.totalGames++;
+  gameStats.gamesThisSession++;
+  gameStats.totalMoves += moves;
+  gameStats.totalTime += gameTime;
+  
+  if (winner === 'tie') {
+    gameStats.draws++;
+    gameStats.currentStreak = { player: null, count: 0 };
+  } else {
+    const player = winner === 'X' ? 'player1' : 'player2';
+    gameStats.wins[player]++;
+    
+    // Update streak
+    if (gameStats.currentStreak.player === player) {
+      gameStats.currentStreak.count++;
+    } else {
+      gameStats.currentStreak = { player, count: 1 };
+    }
+    
+    // Check longest streak
+    if (gameStats.currentStreak.count > gameStats.longestStreak.count) {
+      gameStats.longestStreak = { ...gameStats.currentStreak };
+    }
+    
+    // Update fastest win
+    if (!gameStats.fastestWin || gameTime < gameStats.fastestWin) {
+      gameStats.fastestWin = gameTime;
+    }
+  }
+  
+  // Update best time (overall)
+  if (!gameStats.bestTime || gameTime < gameStats.bestTime) {
+    gameStats.bestTime = gameTime;
+  }
+  
+  // Calculate averages
+  gameStats.averageMovesPerGame = Math.round(gameStats.totalMoves / gameStats.totalGames * 10) / 10;
+  
+  saveStats();
+}
+
+// Display statistics
+function displayStats() {
+  const statsGrid = document.getElementById('statsGrid');
+  const avgTime = gameStats.totalGames > 0 ? Math.round(gameStats.totalTime / gameStats.totalGames) : 0;
+  
+  statsGrid.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-value">${gameStats.totalGames}</div>
+      <div class="stat-label">Total Games</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${gameStats.wins.player1}</div>
+      <div class="stat-label">Player 1 Wins</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${gameStats.wins.player2}</div>
+      <div class="stat-label">Player 2 Wins</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${gameStats.draws}</div>
+      <div class="stat-label">Draws</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${gameStats.bestTime ? formatTime(gameStats.bestTime) : '--'}</div>
+      <div class="stat-label">Best Time</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${gameStats.fastestWin ? formatTime(gameStats.fastestWin) : '--'}</div>
+      <div class="stat-label">Fastest Win</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${gameStats.longestStreak.count || 0}</div>
+      <div class="stat-label">Longest Win Streak</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${gameStats.averageMovesPerGame || 0}</div>
+      <div class="stat-label">Avg Moves/Game</div>
+    </div>
+  `;
+}
+
+// Export statistics
+function exportStats() {
+  const data = {
+    ...gameStats,
+    exportDate: new Date().toISOString(),
+    version: '2.0'
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `tic-tac-toe-stats-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Reset all statistics
+function resetAllStats() {
+  if (confirm('Are you sure you want to reset all statistics? This cannot be undone.')) {
+    gameStats = {
+      totalGames: 0,
+      wins: { player1: 0, player2: 0 },
+      draws: 0,
+      totalMoves: 0,
+      totalTime: 0,
+      bestTime: null,
+      fastestWin: null,
+      currentStreak: { player: null, count: 0 },
+      longestStreak: { player: null, count: 0 },
+      averageMovesPerGame: 0,
+      gamesThisSession: 0
+    };
+    saveStats();
+    displayStats();
+  }
+}
+
+// Modal controls
+const statsModal = document.getElementById('statsModal');
+const statsToggle = document.getElementById('statsToggle');
+const closeStats = document.getElementById('closeStats');
+const exportStatsBtn = document.getElementById('exportStats');
+const resetStatsBtn = document.getElementById('resetStats');
+
+statsToggle.addEventListener('click', () => {
+  displayStats();
+  statsModal.style.display = 'block';
+});
+
+closeStats.addEventListener('click', () => {
+  statsModal.style.display = 'none';
+});
+
+statsModal.addEventListener('click', (e) => {
+  if (e.target === statsModal) {
+    statsModal.style.display = 'none';
+  }
+});
+
+exportStatsBtn.addEventListener('click', exportStats);
+resetStatsBtn.addEventListener('click', resetAllStats);
+
+// Initialize stats
+loadStats();
+
+// Hook into game end events
+const originalEndGame = endGame || function() {};
+function endGame(winner) {
+  const finalTime = gameTimer.elapsedTime + (gameTimer.isRunning && !gameTimer.isPaused ? 
+    Math.floor((Date.now() - gameTimer.startTime) / 1000) : 0);
+  
+  updateGameStats(winner, finalTime, moveCount);
+  
+  // Call original endGame if it exists
+  if (typeof originalEndGame === 'function') {
+    originalEndGame(winner);
+  }
+}
