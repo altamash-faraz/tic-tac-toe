@@ -727,3 +727,116 @@ function placeMarker(event) {
 
 // Initialize undo button state
 updateUndoButton();
+
+// Keyboard Navigation Support
+let currentFocusIndex = 4; // Start at center square
+let keyboardMode = false;
+
+function updateSquareFocus() {
+  squares.forEach((square, index) => {
+    square.classList.remove('focused');
+    if (index === currentFocusIndex) {
+      square.classList.add('focused');
+      square.focus();
+    }
+  });
+}
+
+function moveGridFocus(direction) {
+  const row = Math.floor(currentFocusIndex / 3);
+  const col = currentFocusIndex % 3;
+  
+  switch(direction) {
+    case 'ArrowUp':
+      if (row > 0) currentFocusIndex -= 3;
+      break;
+    case 'ArrowDown':
+      if (row < 2) currentFocusIndex += 3;
+      break;
+    case 'ArrowLeft':
+      if (col > 0) currentFocusIndex -= 1;
+      break;
+    case 'ArrowRight':
+      if (col < 2) currentFocusIndex += 1;
+      break;
+  }
+  
+  updateSquareFocus();
+}
+
+function handleKeyboardInput(event) {
+  if (!gameState.gameActive && !['KeyR', 'KeyP', 'KeyU'].includes(event.code)) {
+    return;
+  }
+  
+  keyboardMode = true;
+  document.body.classList.add('keyboard-active');
+  
+  switch(event.code) {
+    case 'ArrowUp':
+    case 'ArrowDown':
+    case 'ArrowLeft':
+    case 'ArrowRight':
+      event.preventDefault();
+      moveGridFocus(event.key);
+      break;
+      
+    case 'Space':
+    case 'Enter':
+      event.preventDefault();
+      if (squares[currentFocusIndex] && squares[currentFocusIndex].textContent === '') {
+        squares[currentFocusIndex].click();
+      }
+      break;
+      
+    case 'KeyU':
+      event.preventDefault();
+      if (!undoBtn.disabled) {
+        undoBtn.click();
+      }
+      break;
+      
+    case 'KeyR':
+      event.preventDefault();
+      resetTimerBtn.click();
+      currentFocusIndex = 4;
+      updateSquareFocus();
+      break;
+      
+    case 'KeyP':
+      event.preventDefault();
+      pauseBtn.click();
+      break;
+      
+    case 'Escape':
+      keyboardMode = false;
+      document.body.classList.remove('keyboard-active');
+      squares.forEach(square => square.classList.remove('focused'));
+      break;
+  }
+}
+
+// Mouse interaction disables keyboard mode
+function handleMouseEnter() {
+  if (keyboardMode) {
+    keyboardMode = false;
+    document.body.classList.remove('keyboard-active');
+    squares.forEach(square => square.classList.remove('focused'));
+  }
+}
+
+// Event listeners
+document.addEventListener('keydown', handleKeyboardInput);
+squares.forEach(square => {
+  square.addEventListener('mouseenter', handleMouseEnter);
+  square.setAttribute('tabindex', '0');
+});
+
+// Initialize keyboard help visibility
+document.getElementById('keyboardHelp').style.display = 
+  window.innerWidth > 768 ? 'block' : 'none';
+
+window.addEventListener('resize', () => {
+  document.getElementById('keyboardHelp').style.display = 
+    window.innerWidth > 768 ? 'block' : 'none';
+});
