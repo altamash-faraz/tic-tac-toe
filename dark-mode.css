@@ -1,0 +1,82 @@
+/* Dark Mode Styles */
+:root {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d30;
+  --bg-tertiary: #3e3e42;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --accent-color: #4da6ff;
+  --border-color: #555555;
+  --hover-color: #4a4a4a;
+}
+
+[data-theme="dark"] {
+  --bg-white: var(--bg-primary);
+  --bg-light: var(--bg-secondary);
+  --text-dark: var(--text-primary);
+  --border-dark: var(--border-color);
+}
+
+[data-theme="dark"] body {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d30 100%);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .game-container {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .square {
+  background-color: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .square:hover {
+  background-color: var(--hover-color);
+  border-color: var(--accent-color);
+}
+
+[data-theme="dark"] .settings-panel {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+}
+
+[data-theme="dark"] .modal-content {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+}
+
+/* Dark Mode Toggle Button */
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--accent-color);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(77, 166, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
