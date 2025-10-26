@@ -636,3 +636,94 @@ function placeMarker(event) {
   }
   return result;
 }
+
+// Undo Move Feature
+let gameHistory = [];
+let gameStatesHistory = [];
+
+const undoBtn = document.getElementById('undoBtn');
+
+function saveGameState() {
+  const state = {
+    boardState: [...board],
+    currentPlayer: currentPlayer,
+    gameState: { ...gameState },
+    moveCount: moveCount,
+    timerElapsed: gameTimer.elapsedTime + (gameTimer.isRunning && !gameTimer.isPaused ? 
+      Math.floor((Date.now() - gameTimer.startTime) / 1000) : 0)
+  };
+  
+  gameStatesHistory.push(state);
+  gameHistory.push({
+    squareIndex: null, // Will be set when move is made
+    player: currentPlayer
+  });
+  
+  // Limit history to last 10 moves
+  if (gameStatesHistory.length > 10) {
+    gameStatesHistory.shift();
+    gameHistory.shift();
+  }
+  
+  updateUndoButton();
+}
+
+function undoLastMove() {
+  if (gameStatesHistory.length === 0) return;
+  
+  const lastState = gameStatesHistory.pop();
+  const lastMove = gameHistory.pop();
+  
+  // Restore game state
+  board = [...lastState.boardState];
+  currentPlayer = lastState.currentPlayer;
+  gameState = { ...lastState.gameState };
+  moveCount = lastState.moveCount - 1;
+  
+  // Restore timer
+  gameTimer.elapsedTime = lastState.timerElapsed;
+  updateTimerDisplay();
+  
+  // Update UI
+  squares.forEach((square, index) => {
+    square.textContent = board[index];
+    square.classList.remove('winning-square');
+  });
+  
+  // Update displays
+  moveCounter.textContent = `Moves: ${moveCount}`;
+  gameStatus.textContent = currentPlayer === 'X' ? 
+    `${gameState.player1Name}'s turn` : `${gameState.player2Name}'s turn`;
+  
+  // Update score display
+  updateScoreDisplay();
+  
+  updateUndoButton();
+}
+
+function updateUndoButton() {
+  undoBtn.disabled = gameStatesHistory.length === 0 || gameState.gameActive === false;
+}
+
+// Event listener
+undoBtn.addEventListener('click', undoLastMove);
+
+// Integrate with existing move function
+const originalPlaceMarkerWithHistory = placeMarker;
+function placeMarker(event) {
+  if (gameState.gameActive) {
+    saveGameState();
+    // Set the square index for the current move
+    const squareIndex = event.target.getAttribute('data-square-index');
+    if (gameHistory.length > 0) {
+      gameHistory[gameHistory.length - 1].squareIndex = parseInt(squareIndex);
+    }
+  }
+  
+  const result = originalPlaceMarkerWithHistory(event);
+  updateUndoButton();
+  return result;
+}
+
+// Initialize undo button state
+updateUndoButton();
