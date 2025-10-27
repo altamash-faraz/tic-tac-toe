@@ -1,3 +1,10 @@
+/* Timer Styles CSS Variables */
+:root {
+  --primary-green: #009966;
+  --accent-brown: #955d00;
+  --border-dark: #555555;
+}
+
 /* Game Timer and Move Counter Styles */
 .game-info {
   display: flex;

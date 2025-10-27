@@ -263,8 +263,10 @@ function incrementMove() {
 }
 
 function updateGameStatus() {
-  if (!gameState.hasWinner) {
+  if (!gameState.hasWinner && gameState.isGameActive) {
     ui.infoText.textContent = `${gameState.currentPlayer.name}'s turn`;
+  } else if (!gameState.isGameActive && !gameState.hasWinner) {
+    ui.infoText.textContent = "Click the button to start";
   }
 }
 
@@ -431,6 +433,9 @@ function initializeGame() {
   // Load saved data first
   loadGameState();
   
+  // Ensure modal is hidden initially
+  hideModal();
+  
   // Start game button event
   ui.startGameBtn.addEventListener("click", () => {
     playSound('button');
@@ -543,34 +548,140 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize UI with saved data
   updateSettingsUI();
   updateStatistics();
+  updatePlayerNames();
+  updateScores();
+  
+  // Important: Initialize the game board state but don't enable it until players are set
+  if (gameState.players.playerOne.name !== "Player 1" && gameState.players.playerTwo.name !== "Player 2") {
+    enableGameBoard();
+    updateGameStatus();
+  }
+  
+  // Initialize dark mode after DOM is ready
+  initializeDarkMode();
+  
+  // Initialize stats modal
+  initializeStatsModal();
 });
 
 // Dark Mode Toggle Functionality
-const themeToggle = document.getElementById('themeToggle');
-const html = document.documentElement;
+function initializeDarkMode() {
+  const themeToggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
 
-// Check for saved theme preference or default to light mode
-const currentTheme = localStorage.getItem('theme') || 'light';
-html.setAttribute('data-theme', currentTheme);
+  // Check for saved theme preference or default to light mode
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', currentTheme);
 
-// Update button icon based on theme
-function updateThemeIcon() {
-  const theme = html.getAttribute('data-theme');
-  themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+  // Update button icon based on theme
+  function updateThemeIcon() {
+    const theme = html.getAttribute('data-theme');
+    themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+
+  // Initialize theme icon
+  updateThemeIcon();
+
+  // Theme toggle event listener
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon();
+  });
 }
 
-// Initialize theme icon
-updateThemeIcon();
+// Stats Modal Functionality
+function initializeStatsModal() {
+  const statsModal = document.getElementById('statsModal');
+  const statsToggle = document.getElementById('statsToggle');
+  const closeStats = document.getElementById('closeStats');
+  const exportStats = document.getElementById('exportStats');
+  const resetStats = document.getElementById('resetStats');
 
-// Theme toggle event listener
-themeToggle.addEventListener('click', () => {
-  const currentTheme = html.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  // Show stats modal
+  statsToggle.addEventListener('click', () => {
+    playSound('button');
+    populateStatsGrid();
+    statsModal.style.display = 'block';
+  });
+
+  // Close stats modal
+  closeStats.addEventListener('click', () => {
+    playSound('button');
+    statsModal.style.display = 'none';
+  });
+
+  // Close modal when clicking outside
+  statsModal.addEventListener('click', (e) => {
+    if (e.target === statsModal) {
+      statsModal.style.display = 'none';
+    }
+  });
+
+  // Export stats functionality
+  exportStats.addEventListener('click', () => {
+    const data = {
+      players: gameState.players,
+      statistics: gameState.statistics,
+      exportDate: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tic-tac-toe-stats.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // Reset stats functionality
+  resetStats.addEventListener('click', () => {
+    if (confirm('Are you sure you want to reset all statistics? This cannot be undone.')) {
+      gameState.players.playerOne.wins = 0;
+      gameState.players.playerTwo.wins = 0;
+      gameState.statistics.totalGames = 0;
+      gameState.statistics.currentStreak = 0;
+      gameState.statistics.currentStreakPlayer = null;
+      gameState.statistics.tieCount = 0;
+      updateScores();
+      updateStatistics();
+      populateStatsGrid();
+      saveGameState();
+    }
+  });
+}
+
+function populateStatsGrid() {
+  const statsGrid = document.getElementById('statsGrid');
+  const stats = gameState.statistics;
+  const players = gameState.players;
   
-  html.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-  updateThemeIcon();
-});
+  statsGrid.innerHTML = `
+    <div class="stat-item">
+      <span>Total Games:</span>
+      <span>${stats.totalGames}</span>
+    </div>
+    <div class="stat-item">
+      <span>${players.playerOne.name} Wins:</span>
+      <span>${players.playerOne.wins}</span>
+    </div>
+    <div class="stat-item">
+      <span>${players.playerTwo.name} Wins:</span>
+      <span>${players.playerTwo.wins}</span>
+    </div>
+    <div class="stat-item">
+      <span>Ties:</span>
+      <span>${stats.tieCount}</span>
+    </div>
+    <div class="stat-item">
+      <span>Current Streak:</span>
+      <span>${stats.currentStreak} (${stats.currentStreakPlayer || 'None'})</span>
+    </div>
+  `;
+}
 
 // Game Timer and Move Counter
 let gameTimer = {
@@ -1013,47 +1124,5 @@ function resetAllStats() {
     };
     saveStats();
     displayStats();
-  }
-}
-
-// Modal controls
-const statsModal = document.getElementById('statsModal');
-const statsToggle = document.getElementById('statsToggle');
-const closeStats = document.getElementById('closeStats');
-const exportStatsBtn = document.getElementById('exportStats');
-const resetStatsBtn = document.getElementById('resetStats');
-
-statsToggle.addEventListener('click', () => {
-  displayStats();
-  statsModal.style.display = 'block';
-});
-
-closeStats.addEventListener('click', () => {
-  statsModal.style.display = 'none';
-});
-
-statsModal.addEventListener('click', (e) => {
-  if (e.target === statsModal) {
-    statsModal.style.display = 'none';
-  }
-});
-
-exportStatsBtn.addEventListener('click', exportStats);
-resetStatsBtn.addEventListener('click', resetAllStats);
-
-// Initialize stats
-loadStats();
-
-// Hook into game end events
-const originalEndGame = endGame || function() {};
-function endGame(winner) {
-  const finalTime = gameTimer.elapsedTime + (gameTimer.isRunning && !gameTimer.isPaused ? 
-    Math.floor((Date.now() - gameTimer.startTime) / 1000) : 0);
-  
-  updateGameStats(winner, finalTime, moveCount);
-  
-  // Call original endGame if it exists
-  if (typeof originalEndGame === 'function') {
-    originalEndGame(winner);
   }
 }
