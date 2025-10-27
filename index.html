@@ -52,11 +52,20 @@
     />
 
     <script src="script.js" defer></script>
-    <link rel="stylesheet" href="style.css" />`n    <link rel="stylesheet" href="dark-mode.css" />`n    <link rel="stylesheet" href="timer-styles.css" />`n    <link rel="stylesheet" href="stats-modal.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="dark-mode.css" />
+    <link rel="stylesheet" href="timer-styles.css" />
+    <link rel="stylesheet" href="stats-modal.css" />
     <link rel="icon" href="cross.png" type="image/png" />
     <title>Tic Tac Toe Game</title>
   </head>
-  <body>`n    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>`n    <button class="stats-toggle" id="statsToggle" aria-label="View statistics">📊</button>
+  <body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      🌙
+    </button>
+    <button class="stats-toggle" id="statsToggle" aria-label="View statistics">
+      📊
+    </button>
     <!-- Settings Toggle -->
     <button
       class="settings-toggle"
@@ -262,5 +271,23 @@
         </form>
       </div>
     </div>
-  <div class="keyboard-help" id="keyboardHelp">`n      <strong>Keyboard Controls:</strong><br>`n      Arrow keys: Navigate | Space/Enter: Place marker | U: Undo | R: Reset | P: Pause/Resume`n    </div>`n  <div class="stats-modal" id="statsModal">`n      <div class="stats-content">`n        <button class="close-stats" id="closeStats">×</button>`n        <div class="stats-header">🏆 Game Statistics</div>`n        <div class="stats-grid" id="statsGrid"></div>`n        <div class="stats-actions">`n          <button class="stats-btn" id="exportStats">📤 Export Data</button>`n          <button class="stats-btn danger" id="resetStats">🗑️ Reset All</button>`n        </div>`n      </div>`n    </div>`n    <div class="keyboard-help" id="keyboardHelp">
+
+    <div class="keyboard-help" id="keyboardHelp">
+      <strong>Keyboard Controls:</strong><br />
+      Arrow keys: Navigate | Space/Enter: Place marker | U: Undo | R: Reset | P:
+      Pause/Resume
+    </div>
+
+    <div class="stats-modal" id="statsModal">
+      <div class="stats-content">
+        <button class="close-stats" id="closeStats">×</button>
+        <div class="stats-header">🏆 Game Statistics</div>
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="stats-actions">
+          <button class="stats-btn" id="exportStats">📤 Export Data</button>
+          <button class="stats-btn danger" id="resetStats">🗑️ Reset All</button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

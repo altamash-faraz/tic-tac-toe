@@ -199,19 +199,24 @@ function disableGameBoard() {
 }
 
 function handleSquareClick(event) {
-  if (!gameState.isGameActive) return;
+  if (!gameState.isGameActive || gameState.hasWinner) return;
   makeMove(event.target);
 }
 
 function handleKeyPress(event) {
   if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault();
-    if (!gameState.isGameActive) return;
+    if (!gameState.isGameActive || gameState.hasWinner) return;
     makeMove(event.target);
   }
 }
 
 function makeMove(square) {
+  // Prevent moves if game has ended
+  if (gameState.hasWinner || !gameState.isGameActive) {
+    return;
+  }
+  
   if (square.classList.contains("cross") || square.classList.contains("circle")) {
     return; // Square already occupied
   }
@@ -231,6 +236,18 @@ function makeMove(square) {
 
 // MOVE MANAGEMENT
 function incrementMove() {
+  // Check for win with current player (who just made the move)
+  const playerWhoJustMoved = gameState.currentPlayer;
+  
+  if (checkForWin()) {
+    return; // Game ended with a win, don't continue
+  }
+  
+  if (checkForTie()) {
+    return; // Game ended with a tie, don't continue
+  }
+  
+  // Only increment and switch if game continues
   gameState.currentMove += 1;
   gameState.previousPlayer = gameState.currentPlayer;
   
@@ -243,8 +260,6 @@ function incrementMove() {
   }
   
   updateGameStatus();
-  checkForWin();
-  checkForTie();
 }
 
 function updateGameStatus() {
@@ -310,10 +325,14 @@ function handleWin(winner, winningCombination) {
   }
   
   updateScores();
+  updateStatistics();
   ui.infoText.textContent = `🎉 ${winner.name} wins! 🎉`;
   
   playSound('win');
   disableGameBoard();
+  
+  // Save game state and auto-restart after showing winner
+  saveGameState();
   setTimeout(() => {
     resetBoard();
   }, 2500);
@@ -341,6 +360,9 @@ function checkForTie() {
     updateStatistics();
     ui.infoText.textContent = "🤝 It's a tie! 🤝";
     disableGameBoard();
+    
+    // Save game state
+    saveGameState();
     setTimeout(() => {
       resetBoard();
     }, 2500);
@@ -493,11 +515,14 @@ function initializeGame() {
     ui.playerOneName.textContent = gameState.players.playerOne.name;
     ui.playerTwoName.textContent = gameState.players.playerTwo.name;
 
-    // Reset scores for new game
-    resetGame();
+    // Reset the board and start the game (but keep scores)
+    resetBoard();
     
     hideModal();
     ui.startGameBtn.textContent = "New Game";
+    
+    // Save the current state
+    saveGameState();
     
     // Clear form
     ui.form.reset();

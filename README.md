@@ -1,4 +1,4 @@
-# 🎮 Enhanced Tic Tac Toe Game# 🎮 Tic Tac Toe Game
+# 🎮 Tic Tac Toe Game
 
 
 
@@ -22,7 +22,7 @@ A modern, feature-rich Tic Tac Toe game with advanced functionality, dark mode, 
 
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 
-### Enhanced Features- **Accessibility Features**:
+### Game Features- **Accessibility Features**:
 
 - **🌙 Dark Mode Toggle**: Switch between light and dark themes with persistence  - Keyboard navigation support
 
@@ -82,13 +82,13 @@ A modern, feature-rich Tic Tac Toe game with advanced functionality, dark mode, 
 
 ### Installation   git clone https://github.com/altamash-faraz/tic-tac-toe-game.git
 
-1. **Clone the repository**:   cd tic-tac-toe-game
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/altamash-faraz/tic-tac-toe.git
+   cd tic-tac-toe
+   ```
 
-   ```bash   ```
-
-   git clone https://github.com/altamash-faraz/enhanced-tic-tac-toe.git
-
-   cd enhanced-tic-tac-toe2. **Open the game**:
+2. **Open the game**:
 
    ```   - Double-click `index.html` to open in your default browser
 
@@ -102,7 +102,7 @@ A modern, feature-rich Tic Tac Toe game with advanced functionality, dark mode, 
 
      python -m http.server 8000
 
-3. **Play!**: Enjoy the enhanced Tic Tac Toe experience     
+3. **Play!**: Enjoy the Tic Tac Toe experience     
 
      # Python 2
 
@@ -153,8 +153,7 @@ A modern, feature-rich Tic Tac Toe game with advanced functionality, dark mode, 
 ### Color Scheme
 
 ```text
-
-enhanced-tic-tac-toe/- **Primary**: Green gradient background (`#04392e` to `#009966`)
+tic-tac-toe/- **Primary**: Green gradient background (`#04392e` to `#009966`)
 
 ├── index.html              # Main HTML structure- **Secondary**: Brown gradient for game board (`#633d00` to `#955d00`)
 
@@ -306,15 +305,23 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 
-Project Link: [https://github.com/altamash-faraz/enhanced-tic-tac-toe](https://github.com/altamash-faraz/enhanced-tic-tac-toe)3. Commit your changes (`git commit -m 'Add amazing feature'`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
 
 4. Push to the branch (`git push origin feature/amazing-feature`)
 
----5. Open a Pull Request
+5. Open a Pull Request
+
+## Project Link
+
+[https://github.com/altamash-faraz/tic-tac-toe](https://github.com/altamash-faraz/tic-tac-toe)
+
+---
 
 
 
-**Enjoy the enhanced gaming experience! 🎉**## 📄 License
+**Enjoy the gaming experience! 🎉**
+
+## 📄 License
 
 This project is open source and available under the MIT License.
 
