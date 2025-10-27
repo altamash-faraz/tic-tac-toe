@@ -1,42 +1,37 @@
 # 🎮 Tic Tac Toe Game
 
+A modern, responsive, and accessible Tic Tac Toe game built with vanilla HTML, CSS, and JavaScript.
 
+## 🚀 [Play Live Game](https://tic-tac-toe-simplegame.vercel.app/)
 
-A modern, feature-rich Tic Tac Toe game with advanced functionality, dark mode, keyboard navigation, and comprehensive statistics tracking.A modern, responsive, and accessible Tic Tac Toe game built with vanilla HTML, CSS, and JavaScript.
+## 🌟 Features
 
-
-
-## 🌟 Features## 🚀 [Play Live Game](https://tic-tac-toe-simplegame.vercel.app/)
-
-
-
-### Core Game Features## 🌟 Features
-
+### Core Game Features
 - **Two-Player Gameplay**: Classic Tic Tac Toe for two human players
-
-- **Custom Player Names**: Set personalized names (up to 12 characters each)- **Two-Player Gameplay**: Classic Tic Tac Toe for two human players
-
-- **Score Tracking**: Keep track of wins for each player across multiple rounds- **Custom Player Names**: Set personalized names (up to 12 characters each)
-
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices- **Score Tracking**: Keep track of wins for each player across multiple rounds
-
+- **Custom Player Names**: Set personalized names (up to 12 characters each)
+- **Score Tracking**: Keep track of wins for each player across multiple rounds
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 
-### Game Features- **Accessibility Features**:
+### Game Features
 
-- **🌙 Dark Mode Toggle**: Switch between light and dark themes with persistence  - Keyboard navigation support
+- **🌙 Dark Mode Toggle**: Switch between light and dark themes with persistence
+- **⏱️ Game Timer**: Track game duration with pause/resume functionality
+- **🎯 Move Counter**: Monitor the number of moves made in each game
+- **↶ Undo Feature**: Undo up to 10 previous moves with full state restoration
+- **⌨️ Keyboard Navigation**: Complete keyboard control with arrow keys and shortcuts
+- **📊 Advanced Statistics**: Comprehensive game analytics and data export
 
-- **⏱️ Game Timer**: Track game duration with pause/resume functionality  - Screen reader friendly
+### Accessibility Features
 
-- **🎯 Move Counter**: Monitor the number of moves made in each game  - ARIA labels and semantic HTML
+- **Keyboard navigation support**
+- **Screen reader friendly**
+- **ARIA labels and semantic HTML**
+- **Focus indicators**
 
-- **↶ Undo Feature**: Undo up to 10 previous moves with full state restoration  - Focus indicators
+### Visual Feedback
 
-- **⌨️ Keyboard Navigation**: Complete keyboard control with arrow keys and shortcuts- **Visual Feedback**:
-
-- **📊 Advanced Statistics**: Comprehensive game analytics and data export  - Winning combination highlighting
-
-  - Smooth hover animations
+- **Winning combination highlighting**
+- **Smooth hover animations**
 
 ### Accessibility Features  - Game status updates
 
@@ -77,12 +72,10 @@ A modern, feature-rich Tic Tac Toe game with advanced functionality, dark mode, 
 - A modern web browser (Chrome, Firefox, Safari, Edge)1. **Clone the repository**:
 
 - No additional software installation required
-
-   ```bash
-
-### Installation   git clone https://github.com/altamash-faraz/tic-tac-toe-game.git
+### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/altamash-faraz/tic-tac-toe.git
    cd tic-tac-toe
@@ -90,29 +83,27 @@ A modern, feature-rich Tic Tac Toe game with advanced functionality, dark mode, 
 
 2. **Open the game**:
 
-   ```   - Double-click `index.html` to open in your default browser
+   - Double-click `index.html` to open in your default browser
+   - Or serve with a local web server for better experience:
 
-   - Or serve with a local web server:
+   ```bash
+   # Python 3
+   python -m http.server 8000
+   
+   # Python 2
+   python -m SimpleHTTPServer 8000
+   
+   # Node.js (with live-server)
+   npx live-server
+   ```
 
-2. **Open the game**:
+3. **Play!**: Enjoy the Tic Tac Toe experience
 
-   - Double-click `index.html` to open in your default browser     ```bash
+## 🎮 How to Play
 
-   - Or serve with a local web server for better experience     # Python 3
+### Basic Controls
 
-     python -m http.server 8000
-
-3. **Play!**: Enjoy the Tic Tac Toe experience     
-
-     # Python 2
-
-## 🎮 How to Play     python -m SimpleHTTPServer 8000
-
-     
-
-### Basic Controls     # Node.js (with live-server)
-
-- **Mouse**: Click on empty squares to place your marker     npx live-server
+- **Mouse**: Click on empty squares to place your marker
 
 - **Touch**: Tap on empty squares (mobile devices)     ```
 
