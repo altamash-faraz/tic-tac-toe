@@ -15,6 +15,12 @@
   --bg-light: var(--bg-secondary);
   --text-dark: var(--text-primary);
   --border-dark: var(--border-color);
+  --text-gold: #ffd700;
+  --bg-green: linear-gradient(135deg, #1a4c38 0%, #2d7a5c 100%);
+  --bg-brown: linear-gradient(135deg, #2d1f00 0%, #4a3300 100%);
+  --dark: #000000;
+  --text-white: #ffffff;
+  --border: 2px solid var(--border-color);
 }
 
 [data-theme="dark"] body {
@@ -22,31 +28,131 @@
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .game-container {
-  background: var(--bg-secondary);
-  border: 2px solid var(--border-color);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+[data-theme="dark"] #info {
+  color: var(--text-gold);
 }
 
-[data-theme="dark"] .square {
+[data-theme="dark"] .info__player {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .grid__square {
   background-color: var(--bg-tertiary);
   border: 2px solid var(--border-color);
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .square:hover {
+[data-theme="dark"] .grid__square:hover {
   background-color: var(--hover-color);
   border-color: var(--accent-color);
+}
+
+[data-theme="dark"] #grid {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
 }
 
 [data-theme="dark"] .settings-panel {
   background: var(--bg-secondary);
   border: 2px solid var(--border-color);
+  color: var(--text-primary);
 }
 
-[data-theme="dark"] .modal-content {
+[data-theme="dark"] #modal {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] #modal__content {
   background: var(--bg-secondary);
   border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] #modal__content h2 {
+  color: var(--text-gold);
+}
+
+[data-theme="dark"] #modal__content input {
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] #modal__content input:focus {
+  border-color: var(--accent-color);
+}
+
+[data-theme="dark"] #modal__content button {
+  background: var(--accent-color);
+  color: var(--text-primary);
+  border: none;
+}
+
+[data-theme="dark"] #modal__content button:hover {
+  background: #3a8ccc;
+}
+
+[data-theme="dark"] .secondary-btn {
+  background: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+}
+
+[data-theme="dark"] .secondary-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .game-stats {
+  background: rgba(45, 45, 48, 0.3);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .stat-item {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .stats-modal .stats-content {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+}
+
+[data-theme="dark"] .stats-header {
+  color: var(--text-gold);
+}
+
+[data-theme="dark"] .keyboard-help {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] #instructions {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] #instructions__btn {
+  background: var(--accent-color);
+  color: var(--text-primary);
+  border: none;
+}
+
+[data-theme="dark"] #instructions__btn:hover {
+  background: #3a8ccc;
+}
+
+[data-theme="dark"] .toggle-switch {
+  background: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .toggle-switch.active {
+  background: var(--accent-color);
+}
+
+[data-theme="dark"] .setting-item label {
+  color: var(--text-primary);
 }
 
 /* Dark Mode Toggle Button */

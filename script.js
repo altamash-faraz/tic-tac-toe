@@ -569,14 +569,22 @@ function initializeDarkMode() {
   const themeToggle = document.getElementById('themeToggle');
   const html = document.documentElement;
 
+  if (!themeToggle) {
+    console.error('Dark mode toggle button not found!');
+    return;
+  }
+
   // Check for saved theme preference or default to light mode
   const currentTheme = localStorage.getItem('theme') || 'light';
   html.setAttribute('data-theme', currentTheme);
+  
+  console.log('Dark mode initialized with theme:', currentTheme);
 
   // Update button icon based on theme
   function updateThemeIcon() {
     const theme = html.getAttribute('data-theme');
     themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    console.log('Theme icon updated to:', themeToggle.textContent, 'for theme:', theme);
   }
 
   // Initialize theme icon
@@ -587,9 +595,16 @@ function initializeDarkMode() {
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
+    console.log('Toggling theme from', currentTheme, 'to', newTheme);
+    
     html.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon();
+    
+    // Force a style recalculation
+    document.body.style.display = 'none';
+    document.body.offsetHeight; // trigger reflow
+    document.body.style.display = '';
   });
 }
 
