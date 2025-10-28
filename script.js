@@ -129,6 +129,12 @@ function updateSettingsUI() {
     ui.animationToggle.setAttribute('aria-checked', 'false');
     document.body.classList.add('no-animations');
   }
+  
+  // Initialize settings panel as hidden
+  if (ui.settingsPanel) {
+    ui.settingsPanel.style.display = 'none';
+    ui.settingsToggle.setAttribute('aria-expanded', 'false');
+  }
 }
 
 // SOUND EFFECTS
@@ -446,7 +452,13 @@ function initializeGame() {
   ui.settingsToggle.addEventListener("click", () => {
     playSound('button');
     const isVisible = ui.settingsPanel.style.display === 'block';
-    ui.settingsPanel.style.display = isVisible ? 'none' : 'block';
+    if (isVisible) {
+      ui.settingsPanel.style.display = 'none';
+      ui.settingsToggle.setAttribute('aria-expanded', 'false');
+    } else {
+      ui.settingsPanel.style.display = 'block';
+      ui.settingsToggle.setAttribute('aria-expanded', 'true');
+    }
   });
   
   // Sound toggle
@@ -516,12 +528,12 @@ function initializeGame() {
     gameState.players.playerOne.name = formatPlayerName(player1Input);
     gameState.players.playerTwo.name = formatPlayerName(player2Input);
     
-    // Update UI
-    ui.playerOneName.textContent = gameState.players.playerOne.name;
-    ui.playerTwoName.textContent = gameState.players.playerTwo.name;
+    // Update UI immediately
+    updatePlayerNames();
 
     // Reset the board and start the game (but keep scores)
     resetBoard();
+    enableGameBoard();
     
     hideModal();
     ui.startGameBtn.textContent = "New Game";
@@ -531,6 +543,10 @@ function initializeGame() {
     
     // Clear form
     ui.form.reset();
+    
+    // Start the game
+    gameState.isGameActive = true;
+    updateGameStatus();
   });
   
   // Close modal on Escape key
@@ -543,130 +559,163 @@ function initializeGame() {
 
 // Initialize the game when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  initializeGame();
-  
-  // Initialize UI with saved data
-  updateSettingsUI();
-  updateStatistics();
-  updatePlayerNames();
-  updateScores();
-  
-  // Important: Initialize the game board state but don't enable it until players are set
-  if (gameState.players.playerOne.name !== "Player 1" && gameState.players.playerTwo.name !== "Player 2") {
-    enableGameBoard();
-    updateGameStatus();
+  try {
+    initializeGame();
+    
+    // Initialize UI with saved data
+    updateSettingsUI();
+    updateStatistics();
+    updatePlayerNames();
+    updateScores();
+    
+    // Important: Initialize the game board state but don't enable it until players are set
+    if (gameState.players.playerOne.name !== "Player 1" && gameState.players.playerTwo.name !== "Player 2") {
+      enableGameBoard();
+      updateGameStatus();
+    }
+    
+    // Initialize dark mode after DOM is ready
+    initializeDarkMode();
+    
+    // Initialize stats modal
+    initializeStatsModal();
+    
+    console.log('Game initialized successfully!');
+  } catch (error) {
+    console.error('Error initializing game:', error);
   }
-  
-  // Initialize dark mode after DOM is ready
-  initializeDarkMode();
-  
-  // Initialize stats modal
-  initializeStatsModal();
 });
 
 // Dark Mode Toggle Functionality
 function initializeDarkMode() {
-  const themeToggle = document.getElementById('themeToggle');
-  const html = document.documentElement;
+  try {
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
 
-  if (!themeToggle) {
-    console.error('Dark mode toggle button not found!');
-    return;
-  }
+    if (!themeToggle) {
+      console.error('Dark mode toggle button not found!');
+      return;
+    }
 
-  // Check for saved theme preference or default to light mode
-  const currentTheme = localStorage.getItem('theme') || 'light';
-  html.setAttribute('data-theme', currentTheme);
-  
-  console.log('Dark mode initialized with theme:', currentTheme);
-
-  // Update button icon based on theme
-  function updateThemeIcon() {
-    const theme = html.getAttribute('data-theme');
-    themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-    console.log('Theme icon updated to:', themeToggle.textContent, 'for theme:', theme);
-  }
-
-  // Initialize theme icon
-  updateThemeIcon();
-
-  // Theme toggle event listener
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', currentTheme);
     
-    console.log('Toggling theme from', currentTheme, 'to', newTheme);
-    
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+    console.log('Dark mode initialized with theme:', currentTheme);
+
+    // Update button icon based on theme
+    function updateThemeIcon() {
+      const theme = html.getAttribute('data-theme');
+      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      themeToggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+      console.log('Theme icon updated to:', themeToggle.textContent, 'for theme:', theme);
+    }
+
+    // Initialize theme icon
     updateThemeIcon();
+
+    // Theme toggle event listener
+    themeToggle.addEventListener('click', () => {
+      try {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        console.log('Toggling theme from', currentTheme, 'to', newTheme);
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon();
+        
+        // Force a style recalculation
+        document.body.style.display = 'none';
+        document.body.offsetHeight; // trigger reflow
+        document.body.style.display = '';
+        
+        playSound('button');
+      } catch (error) {
+        console.error('Error toggling theme:', error);
+      }
+    });
     
-    // Force a style recalculation
-    document.body.style.display = 'none';
-    document.body.offsetHeight; // trigger reflow
-    document.body.style.display = '';
-  });
+    console.log('Dark mode event listeners attached successfully');
+  } catch (error) {
+    console.error('Error initializing dark mode:', error);
+  }
 }
 
 // Stats Modal Functionality
 function initializeStatsModal() {
-  const statsModal = document.getElementById('statsModal');
-  const statsToggle = document.getElementById('statsToggle');
-  const closeStats = document.getElementById('closeStats');
-  const exportStats = document.getElementById('exportStats');
-  const resetStats = document.getElementById('resetStats');
+  try {
+    const statsModal = document.getElementById('statsModal');
+    const statsToggle = document.getElementById('statsToggle');
+    const closeStats = document.getElementById('closeStats');
+    const exportStats = document.getElementById('exportStats');
+    const resetStats = document.getElementById('resetStats');
 
-  // Show stats modal
-  statsToggle.addEventListener('click', () => {
-    playSound('button');
-    populateStatsGrid();
-    statsModal.style.display = 'block';
-  });
-
-  // Close stats modal
-  closeStats.addEventListener('click', () => {
-    playSound('button');
-    statsModal.style.display = 'none';
-  });
-
-  // Close modal when clicking outside
-  statsModal.addEventListener('click', (e) => {
-    if (e.target === statsModal) {
-      statsModal.style.display = 'none';
+    if (!statsModal || !statsToggle || !closeStats) {
+      console.warn('Some stats modal elements not found, skipping stats modal initialization');
+      return;
     }
-  });
 
-  // Export stats functionality
-  exportStats.addEventListener('click', () => {
-    const data = {
-      players: gameState.players,
-      statistics: gameState.statistics,
-      exportDate: new Date().toISOString()
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'tic-tac-toe-stats.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-
-  // Reset stats functionality
-  resetStats.addEventListener('click', () => {
-    if (confirm('Are you sure you want to reset all statistics? This cannot be undone.')) {
-      gameState.players.playerOne.wins = 0;
-      gameState.players.playerTwo.wins = 0;
-      gameState.statistics.totalGames = 0;
-      gameState.statistics.currentStreak = 0;
-      gameState.statistics.currentStreakPlayer = null;
-      gameState.statistics.tieCount = 0;
-      updateScores();
-      updateStatistics();
+    // Show stats modal
+    statsToggle.addEventListener('click', () => {
+      playSound('button');
       populateStatsGrid();
-      saveGameState();
+      statsModal.style.display = 'block';
+    });
+
+    // Close stats modal
+    closeStats.addEventListener('click', () => {
+      playSound('button');
+      statsModal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    statsModal.addEventListener('click', (e) => {
+      if (e.target === statsModal) {
+        statsModal.style.display = 'none';
+      }
+    });
+
+    // Export stats functionality
+    if (exportStats) {
+      exportStats.addEventListener('click', () => {
+        const data = {
+          players: gameState.players,
+          statistics: gameState.statistics,
+          exportDate: new Date().toISOString()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'tic-tac-toe-stats.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
     }
-  });
+
+    // Reset stats functionality
+    if (resetStats) {
+      resetStats.addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset all statistics?')) {
+          gameState.statistics = {
+            totalGames: 0,
+            currentStreak: 0,
+            currentStreakPlayer: null,
+            tieCount: 0
+          };
+          updateStatistics();
+          saveGameState();
+          populateStatsGrid();
+        }
+      });
+    }
+    
+    console.log('Stats modal initialized successfully');
+  } catch (error) {
+    console.error('Error initializing stats modal:', error);
+  }
 }
 
 function populateStatsGrid() {
