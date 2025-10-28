@@ -21,35 +21,10 @@ A modern, responsive, and accessible Tic Tac Toe game built with vanilla HTML, C
 - **⌨️ Keyboard Navigation**: Complete keyboard control with arrow keys and shortcuts
 - **📊 Advanced Statistics**: Comprehensive game analytics and data export
 
-### Accessibility Features
-
-- **Keyboard navigation support**
-- **Screen reader friendly**
-- **ARIA labels and semantic HTML**
-- **Focus indicators**
-
 ### Visual Feedback
 
 - **Winning combination highlighting**
 - **Smooth hover animations**
-
-### Accessibility Features  - Game status updates
-
-- **Keyboard Navigation**: Full game playable without mouse- **Modern UI**: Clean, gradient-based design with smooth transitions
-
-  - Arrow keys for navigation
-
-  - Space/Enter to place markers## Getting Started
-
-  - U for undo, R for reset, P for pause/resume
-
-- **Screen Reader Friendly**: ARIA labels and semantic HTML### Live Demo
-
-- **Focus Indicators**: Clear visual focus states
-
-- **High Contrast**: Optimized color ratios for readability🎮 **[Play the game now!](https://tic-tac-toe-simplegame.vercel.app/)**
-
-
 
 ### Statistics & Analytics### Local Development
 
@@ -137,13 +112,6 @@ A modern, responsive, and accessible Tic Tac Toe game built with vanilla HTML, C
 
 - **Dark Mode**: Toggle with the 🌙 button
 
-## 🎨 Design Features
-
-## 📁 Project Structure
-
-### Color Scheme
-
-```text
 tic-tac-toe/- **Primary**: Green gradient background (`#04392e` to `#009966`)
 
 ├── index.html              # Main HTML structure- **Secondary**: Brown gradient for game board (`#633d00` to `#955d00`)
@@ -270,64 +238,6 @@ tic-tac-toe/- **Primary**: Green gradient background (`#04392e` to `#009966`)
 
 
 
-## 📄 License## 📱 Mobile Experience
 
 
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.The game is fully responsive and optimized for mobile devices:
-
-
-
-## 🙏 Acknowledgments- Touch-friendly button sizes
-
-- Readable text on small screens
-
-- Original Tic Tac Toe concept- Adjusted layout for portrait orientation
-
-- Modern web development practices- Smooth touch interactions
-
-- Accessibility guidelines (WCAG 2.1)
-
-- User experience best practices## 🤝 Contributing
-
-
-
-## 📧 Contact1. Fork the repository
-
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-
-4. Push to the branch (`git push origin feature/amazing-feature`)
-
-5. Open a Pull Request
-
-## Project Link
-
-[https://github.com/altamash-faraz/tic-tac-toe](https://github.com/altamash-faraz/tic-tac-toe)
-
----
-
-
-
-**Enjoy the gaming experience! 🎉**
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
-## 🙏 Acknowledgments
-
-- Icons from custom assets
-- Poppins font from Google Fonts
-- Inspiration from classic Tic Tac Toe gameplay
-
-## 📧 Contact
-
-Project Link: [https://github.com/altamash-faraz/tic-tac-toe-game](https://github.com/altamash-faraz/tic-tac-toe-game)
-
-Live Demo: [https://tic-tac-toe-simplegame.vercel.app/](https://tic-tac-toe-simplegame.vercel.app/)
-
----
-
-Enjoy playing! 🎉
