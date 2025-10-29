@@ -105,30 +105,6 @@
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .game-stats {
-  background: rgba(45, 45, 48, 0.3);
-  border: 1px solid var(--border-color);
-}
-
-[data-theme="dark"] .stat-item {
-  color: var(--text-primary);
-}
-
-[data-theme="dark"] .stats-modal .stats-content {
-  background: var(--bg-secondary);
-  border: 2px solid var(--border-color);
-}
-
-[data-theme="dark"] .stats-header {
-  color: var(--text-gold);
-}
-
-[data-theme="dark"] .keyboard-help {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-}
-
 [data-theme="dark"] #instructions {
   color: var(--text-primary);
 }
@@ -184,44 +160,5 @@
     width: 40px;
     height: 40px;
     font-size: 16px;
-  }
-}
-/* Keyboard Navigation Styles */
-.square:focus {
-  outline: 3px solid var(--accent-color);
-  outline-offset: 2px;
-  z-index: 10;
-}
-
-.keyboard-help {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  padding: 10px 15px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  font-size: 12px;
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
-}
-
-.keyboard-help:hover {
-  opacity: 1;
-}
-
-.keyboard-active .square {
-  transition: all 0.2s ease;
-}
-
-.keyboard-active .square.focused {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(77, 166, 255, 0.5);
-}
-
-@media (max-width: 768px) {
-  .keyboard-help {
-    display: none;
   }
 }

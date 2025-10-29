@@ -54,17 +54,12 @@
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="dark-mode.css" />
-    <link rel="stylesheet" href="timer-styles.css" />
-    <link rel="stylesheet" href="stats-modal.css" />
     <link rel="icon" href="cross.png" type="image/png" />
     <title>Tic Tac Toe Game</title>
   </head>
   <body>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
       🌙
-    </button>
-    <button class="stats-toggle" id="statsToggle" aria-label="View statistics">
-      📊
     </button>
     <!-- Settings Toggle -->
     <button
@@ -138,27 +133,6 @@
         <span id="info__player__name2" class="player-name">Player 2</span>
         <span class="score-separator">:</span>
         <span id="info__player__score2" class="player-score">0</span>
-      </div>
-
-      <!-- Game Statistics -->
-      <div class="game-stats" id="game-stats">
-        <details>
-          <summary>Game Statistics</summary>
-          <div class="stats-content">
-            <div class="stat-item">
-              <span>Games Played:</span>
-              <span id="total-games">0</span>
-            </div>
-            <div class="stat-item">
-              <span>Current Streak:</span>
-              <span id="current-streak">0</span>
-            </div>
-            <div class="stat-item">
-              <span>Ties:</span>
-              <span id="tie-count">0</span>
-            </div>
-          </div>
-        </details>
       </div>
     </header>
     <main id="grid" role="main" aria-label="Tic Tac Toe Game Board">
@@ -269,24 +243,6 @@
             Cancel
           </button>
         </form>
-      </div>
-    </div>
-
-    <div class="keyboard-help" id="keyboardHelp">
-      <strong>Keyboard Controls:</strong><br />
-      Arrow keys: Navigate | Space/Enter: Place marker | U: Undo | R: Reset | P:
-      Pause/Resume
-    </div>
-
-    <div class="stats-modal" id="statsModal">
-      <div class="stats-content">
-        <button class="close-stats" id="closeStats">×</button>
-        <div class="stats-header">🏆 Game Statistics</div>
-        <div class="stats-grid" id="statsGrid"></div>
-        <div class="stats-actions">
-          <button class="stats-btn" id="exportStats">📤 Export Data</button>
-          <button class="stats-btn danger" id="resetStats">🗑️ Reset All</button>
-        </div>
       </div>
     </div>
   </body>

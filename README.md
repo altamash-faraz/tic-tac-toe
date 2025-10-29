@@ -1,8 +1,10 @@
 # 🎮 Tic Tac Toe Game
 
-A modern, responsive, and accessible Tic Tac Toe game built with vanilla HTML, CSS, and JavaScript.
+A modern, responsive, and feature-rich Tic Tac Toe game built with vanilla HTML, CSS, and JavaScript.
 
 ## 🚀 [Play Live Game](https://tic-tac-toe-simplegame.vercel.app/)
+
+🎯 **Try it now**: Experience the game live on Vercel!
 
 ## 🌟 Features
 
@@ -26,27 +28,20 @@ A modern, responsive, and accessible Tic Tac Toe game built with vanilla HTML, C
 - **Winning combination highlighting**
 - **Smooth hover animations**
 
-### Statistics & Analytics### Local Development
+### Statistics & Analytics
 
 - **Game Tracking**: Total games, wins, draws, and streaks
-
-- **Performance Metrics**: Best times, fastest wins, average moves per game#### Prerequisites
-
+- **Performance Metrics**: Best times, fastest wins, average moves per game
 - **Data Export**: Download statistics as JSON file
-
-- **Persistent Storage**: All data saved locally- A modern web browser (Chrome, Firefox, Safari, Edge)
-
-- No additional software installation required
+- **Persistent Storage**: All data saved locally
 
 ## 🚀 Getting Started
 
-#### Installation
-
 ### Prerequisites
 
-- A modern web browser (Chrome, Firefox, Safari, Edge)1. **Clone the repository**:
-
+- A modern web browser (Chrome, Firefox, Safari, Edge)
 - No additional software installation required
+
 ### Installation
 
 1. **Clone the repository**:

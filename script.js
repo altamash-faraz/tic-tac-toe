@@ -16,11 +16,31 @@ const game = {
 };
 
 // Utility Functions
-const save = () => localStorage.setItem('ttt', JSON.stringify(game));
+const save = () => {
+  // Only save settings and scores, not player names
+  const dataToSave = {
+    players: [
+      { name: "Player 1", wins: game.players[0].wins, symbol: "cross" },
+      { name: "Player 2", wins: game.players[1].wins, symbol: "circle" }
+    ],
+    settings: game.settings
+  };
+  localStorage.setItem('ttt', JSON.stringify(dataToSave));
+};
+
 const load = () => {
   try {
     const data = JSON.parse(localStorage.getItem('ttt'));
-    if (data) Object.assign(game, data);
+    if (data) {
+      // Load scores and settings but keep default names
+      if (data.players) {
+        game.players[0].wins = data.players[0].wins || 0;
+        game.players[1].wins = data.players[1].wins || 0;
+      }
+      if (data.settings) {
+        game.settings = { ...game.settings, ...data.settings };
+      }
+    }
   } catch (e) {}
 };
 
@@ -75,6 +95,21 @@ const resetBoard = () => {
   game.move = 1;
   game.active = true;
   updateUI();
+};
+
+const resetGame = () => {
+  // Reset player names to default
+  game.players[0].name = "Player 1";
+  game.players[1].name = "Player 2";
+  
+  // Reset board
+  resetBoard();
+  
+  // Update button text back to "Start Game"
+  $('instructions__btn').textContent = 'Start Game';
+  
+  // Save state
+  save();
 };
 
 const makeMove = sq => {
@@ -193,7 +228,15 @@ document.addEventListener('DOMContentLoaded', () => {
   squares.forEach(sq => sq.onclick = () => makeMove(sq));
   
   // UI Events
-  $('instructions__btn').onclick = showModal;
+  $('instructions__btn').onclick = () => {
+    // If the button says "New Game", reset everything
+    if ($('instructions__btn').textContent === 'New Game') {
+      resetGame();
+    } else {
+      // If it says "Start Game", show the modal
+      showModal();
+    }
+  };
   $('close-modal-btn').onclick = hideModal;
   $('settings-toggle').onclick = toggleSettings;
   $('sound-toggle').onclick = toggleSound;

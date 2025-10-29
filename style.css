@@ -103,11 +103,6 @@
     top: 10px;
     right: 60px;
   }
-  
-  .stats-toggle {
-    top: 10px;
-    right: 110px;
-  }
 }
 
 .setting-item {
@@ -202,40 +197,6 @@ h2:hover {
 .score-separator {
   font-size: 1rem;
   font-weight: 600;
-}
-
-/* GAME STATISTICS */
-.game-stats {
-  margin-top: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-}
-
-.game-stats summary {
-  cursor: pointer;
-  font-weight: 600;
-  color: var(--text-gold);
-  text-align: center;
-  padding: 0.5rem;
-}
-
-.game-stats summary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0.3rem;
-}
-
-.stats-content {
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.stat-item {
-  display: flex;
-  justify-content: space-between;
-  margin: 0.3rem 0;
-  color: var(--text-white);
-  font-size: 0.9rem;
 }
 
 /* SECONDARY BUTTONS */
