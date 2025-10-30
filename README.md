@@ -6,6 +6,14 @@ A modern, responsive, and feature-rich Tic Tac Toe game built with vanilla HTML,
 
 🎯 **Try it now**: Experience the game live on Vercel!
 
+## 🛠️ Technologies Used
+
+- **Frontend**: Vanilla JavaScript (ES6+)
+- **Styling**: CSS3 with Flexbox/Grid
+- **Build**: No build tools required
+- **Deployment**: Vercel
+- **Storage**: LocalStorage for persistence
+
 ## 🌟 Features
 
 ### Core Game Features
